@@ -6,6 +6,7 @@ class MountManager < Formula
 
   depends_on :macos
   depends_on "pipx" => :recommended
+  depends_on cask: "macfuse"
 
   def install
     # Create app bundle structure first to avoid output name conflict with source dir
@@ -48,6 +49,9 @@ class MountManager < Formula
       </dict>
       </plist>
     XML
+
+    # Symlink app to /Applications
+    ln_sf prefix/"MountManager.app", "/Applications/MountManager.app"
   end
 
   def post_install
@@ -57,19 +61,15 @@ class MountManager < Formula
     end
   end
 
+  def uninstall
+    rm_f "/Applications/MountManager.app"
+  end
+
   def caveats
     <<~EOS
-      MountManager.app has been installed to:
-        #{prefix}/MountManager.app
-
-      To add to /Applications:
-        ln -sf #{prefix}/MountManager.app /Applications/MountManager.app
+      MountManager.app has been linked to /Applications.
 
       To start at login, add it via System Settings > General > Login Items.
-
-      Dependencies:
-        - oxfs (installed via pipx): SSHFS client using SSH and FUSE
-        - macFUSE: required by oxfs, install via: brew install --cask macfuse
     EOS
   end
 end
