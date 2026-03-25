@@ -8,12 +8,13 @@ cask "mount-manager" do
   homepage "https://github.com/mhjiang97/MountManager"
 
   depends_on cask: "macfuse"
+  depends_on formula: "pipx"
 
   app "MountManager.app"
 
   postflight do
     system_command "/usr/bin/xattr", args: ["-d", "com.apple.quarantine", "#{appdir}/MountManager.app"]
-    system "pipx", "install", "oxfs" unless system("/usr/bin/which", "-s", "oxfs")
+    system_command "#{HOMEBREW_PREFIX}/bin/pipx", args: ["install", "oxfs"]
   end
 
   zap trash: [
