@@ -55,19 +55,16 @@ class MountManager < Formula
       </plist>
     XML
 
-    # Symlink app to /Applications
-    ln_sf prefix/"MountManager.app", "/Applications/MountManager.app"
   end
 
   def post_install
+    # Symlink app to /Applications (runs outside sandbox)
+    ln_sf prefix/"MountManager.app", "/Applications/MountManager.app"
+
     # Install oxfs via pipx if not already available
     unless which("oxfs")
       system "pipx", "install", "oxfs"
     end
-  end
-
-  def uninstall
-    rm_f "/Applications/MountManager.app"
   end
 
   def caveats
