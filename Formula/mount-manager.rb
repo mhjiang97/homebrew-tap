@@ -8,20 +8,19 @@ class MountManager < Formula
   depends_on "pipx" => :recommended
 
   def install
-    # Build the binary
+    # Create app bundle structure first to avoid output name conflict with source dir
+    app_contents = prefix/"MountManager.app/Contents"
+    (app_contents/"MacOS").mkpath
+    (app_contents/"Resources").mkpath
+
+    # Build the binary directly into the bundle
     system "swiftc",
-           "-o", "MountManager",
+           "-o", app_contents/"MacOS/MountManager",
            "-parse-as-library",
            "-framework", "SwiftUI",
            "-framework", "Security",
            "-framework", "AppKit",
            *Dir["MountManager/*.swift"]
-
-    # Create app bundle
-    app_contents = prefix/"MountManager.app/Contents"
-    (app_contents/"MacOS").mkpath
-    (app_contents/"Resources").mkpath
-    cp "MountManager", app_contents/"MacOS/MountManager"
     cp "MountManager.icns", app_contents/"Resources/AppIcon.icns"
     (app_contents/"Info.plist").write <<~XML
       <?xml version="1.0" encoding="UTF-8"?>
