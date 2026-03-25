@@ -58,8 +58,8 @@ class MountManager < Formula
   end
 
   def post_install
-    # Symlink app to /Applications (runs outside sandbox)
-    ln_sf prefix/"MountManager.app", "/Applications/MountManager.app"
+    # Symlink app to /Applications
+    system "ln", "-sf", "#{prefix}/MountManager.app", "/Applications/MountManager.app"
 
     # Install oxfs via pipx if not already available
     unless which("oxfs")
