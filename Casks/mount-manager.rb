@@ -12,6 +12,7 @@ cask "mount-manager" do
   app "MountManager.app"
 
   postflight do
+    system_command "/usr/bin/xattr", args: ["-d", "com.apple.quarantine", "#{appdir}/MountManager.app"]
     system "pipx", "install", "oxfs" unless system("/usr/bin/which", "-s", "oxfs")
   end
 
