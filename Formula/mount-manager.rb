@@ -6,9 +6,14 @@ class MountManager < Formula
 
   depends_on :macos
   depends_on "pipx" => :recommended
-  depends_on cask: "macfuse"
 
   def install
+    # Check for macFUSE
+    unless File.exist?("/Library/Filesystems/macfuse.fs") || File.exist?("/usr/local/lib/libfuse.dylib")
+      ohai "macFUSE is required but not installed. Installing now..."
+      system "brew", "install", "--cask", "macfuse"
+    end
+
     # Create app bundle structure first to avoid output name conflict with source dir
     app_contents = prefix/"MountManager.app/Contents"
     (app_contents/"MacOS").mkpath
