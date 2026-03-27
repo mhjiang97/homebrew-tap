@@ -1,6 +1,6 @@
 cask "mount-manager" do
-  version "0.0.1.2"
-  sha256 "d3d5c9c758606daae8bcf54e4b83a571b93672f63c114a1273342bb881f82ea1"
+  version "0.0.1.3"
+  sha256 "bb105e5a39f89795a77e80e1782f8a3513f6e2b7f48be2af33abccf3d0bfa5d6"
 
   url "https://github.com/mhjiang97/MountManager/releases/download/v#{version}/MountManager.zip"
   name "MountManager"
@@ -23,7 +23,5 @@ cask "mount-manager" do
 
   caveats <<~EOS
     MountManager requires oxfs (installed via pipx) and macFUSE.
-
-    To start at login, add MountManager via System Settings > General > Login Items.
   EOS
 end

@@ -10,8 +10,8 @@ brew tap mhjiang97/tap
 
 ## Available Casks
 
-| Cask | Description |
-|------|-------------|
+| Cask            | Description                                                                       |
+| --------------- | --------------------------------------------------------------------------------- |
 | `mount-manager` | macOS menu bar app for managing [oxfs](https://github.com/oxfs/oxfs) SSHFS mounts |
 
 ### Install MountManager
