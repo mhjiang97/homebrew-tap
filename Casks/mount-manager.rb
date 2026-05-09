@@ -1,6 +1,6 @@
 cask "mount-manager" do
-  version "0.0.1.4"
-  sha256 "fde856841c83a38d52cf5563894a8e3162ffec6b77016de16786228ce75ea645"
+  version "0.0.1.1"
+  sha256 "b771b7364c326a0ffbb2ee491af194a2c2659b66afaa5abf084d42759745f9d4"
 
   url "https://github.com/mhjiang97/MountManager/releases/download/v#{version}/MountManager.zip"
   name "MountManager"
