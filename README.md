@@ -13,6 +13,7 @@ brew tap mhjiang97/tap
 | Cask            | Description                                                                       |
 | --------------- | --------------------------------------------------------------------------------- |
 | `mount-manager` | macOS menu bar app for managing [oxfs](https://github.com/oxfs/oxfs) SSHFS mounts |
+| `caffeinate`    | macOS menu bar wrapper for `/usr/bin/caffeinate`                                  |
 
 ### Install MountManager
 
@@ -21,3 +22,9 @@ brew install --cask mount-manager
 ```
 
 This will automatically install [macFUSE](https://macfuse.github.io/) if not already present.
+
+### Install Caffeinate
+
+```bash
+brew install --cask caffeinate
+```
