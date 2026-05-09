@@ -13,18 +13,30 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Update mount-manager.rb
+      - name: Update cask
         run: |
+          CASK="${{ github.event.client_payload.cask }}"
           VERSION="${{ github.event.client_payload.version }}"
           SHA256="${{ github.event.client_payload.sha256 }}"
-          sed -i "s/version \".*\"/version \"${VERSION}\"/" Casks/mount-manager.rb
-          sed -i "s/sha256 \".*\"/sha256 \"${SHA256}\"/" Casks/mount-manager.rb
+          if [ -z "${CASK}" ]; then
+            echo "Missing 'cask' in client_payload" >&2
+            exit 1
+          fi
+          FILE="Casks/${CASK}.rb"
+          if [ ! -f "${FILE}" ]; then
+            echo "Cask file not found: ${FILE}" >&2
+            exit 1
+          fi
+          sed -i "s/version \".*\"/version \"${VERSION}\"/" "${FILE}"
+          sed -i "s/sha256 \".*\"/sha256 \"${SHA256}\"/" "${FILE}"
 
       - name: Commit and push
         run: |
+          CASK="${{ github.event.client_payload.cask }}"
+          VERSION="${{ github.event.client_payload.version }}"
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add Casks/mount-manager.rb
+          git add "Casks/${CASK}.rb"
           git diff --cached --quiet && echo "No changes" && exit 0
-          git commit -m "Update mount-manager to v${{ github.event.client_payload.version }}"
+          git commit -m "Update ${CASK} to v${VERSION}"
           git push
