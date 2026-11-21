@@ -7,13 +7,15 @@ cask "caffeinate" do
   desc "Menu bar wrapper for /usr/bin/caffeinate"
   homepage "https://github.com/mhjiang97/Caffeinate"
 
+  depends_on macos: :tahoe
+
   app "Caffeinate.app"
 
-  postflight do
-    system_command "/usr/bin/xattr", args: ["-d", "com.apple.quarantine", "#{appdir}/Caffeinate.app"]
+  postflight_steps do
+    run "/usr/bin/xattr",
+        args:         ["-d", "com.apple.quarantine", "{{appdir}}/Caffeinate.app"],
+        must_succeed: false
   end
 
-  zap trash: [
-    "~/Library/Preferences/com.mjhk.Caffeinate.plist",
-  ]
+  zap trash: "~/Library/Preferences/com.mjhk.Caffeinate.plist"
 end
