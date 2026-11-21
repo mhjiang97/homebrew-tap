@@ -7,7 +7,7 @@ cask "caffeinate" do
   desc "Menu bar wrapper for /usr/bin/caffeinate"
   homepage "https://github.com/mhjiang97/Caffeinate"
 
-  depends_on macos: :tahoe
+  depends_on macos: :golden_gate
 
   app "Caffeinate.app"
 
