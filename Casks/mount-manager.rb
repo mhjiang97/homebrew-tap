@@ -9,17 +9,33 @@ cask "mount-manager" do
 
   depends_on cask: "macfuse"
   depends_on formula: "pipx"
+  depends_on macos: :tahoe
 
   app "MountManager.app"
 
-  postflight do
-    system_command "/usr/bin/xattr", args: ["-d", "com.apple.quarantine", "#{appdir}/MountManager.app"]
-    system_command "#{HOMEBREW_PREFIX}/bin/pipx", args: ["install", "oxfs"]
+  postflight_steps do
+    run "/usr/bin/xattr",
+        args:         ["-d", "com.apple.quarantine", "{{appdir}}/MountManager.app"],
+        must_succeed: false
+    # Steps run with a throwaway HOME, so point pipx back at the user's real home,
+    # where MountManager looks for oxfs (~/.local/bin). The pip backend keeps the
+    # writable paths predictable; pipx would otherwise pick up uv if installed.
+    run "/bin/sh",
+        args:           ["-c", 'HOME=~{{user}} exec "$0" install oxfs', "{{HOMEBREW_PREFIX}}/bin/pipx"],
+        env:            { "PIPX_DEFAULT_BACKEND" => "pip" },
+        network_access: true,
+        writable_paths: [
+          ".local/pipx",
+          ".local/bin",
+          ".local/share/man",
+          "Library/Caches/pip",
+          "Library/Caches/pipx",
+          "Library/Logs/pipx",
+        ],
+        writable_base:  :home
   end
 
-  zap trash: [
-    "~/Library/Preferences/com.mountmanager.app.plist",
-  ]
+  zap trash: "~/Library/Preferences/com.mountmanager.app.plist"
 
   caveats <<~EOS
     MountManager requires oxfs (installed via pipx) and macFUSE.
